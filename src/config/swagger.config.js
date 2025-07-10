@@ -1,13 +1,11 @@
 // src/config/swagger.config.js
 
 const swaggerDefinition = {
-  // La línea de versión, crucial para que Swagger funcione.
   openapi: '3.0.0',
-
   info: {
     title: 'API Calculadora Geométrica',
     version: '1.0.0',
-    description: 'Una API para calcular áreas y volúmenes de figuras geométricas, definida directamente como un objeto de JS.',
+    description: 'Una API para calcular áreas y volúmenes, y consultar un historial de operaciones.',
   },
   servers: [
     {
@@ -20,9 +18,13 @@ const swaggerDefinition = {
       name: 'Cálculos',
       description: 'Endpoints para cálculos geométricos',
     },
+    {
+      name: 'Historial',
+      description: 'Endpoint para visualizar el historial de operaciones',
+    },
   ],
-  // Definición de todas las rutas de la API.
   paths: {
+    // --- Rutas de Cálculos (Restauradas) ---
     '/api/calculations/rectangle/area': {
       post: {
         summary: 'Calcula el área de un rectángulo',
@@ -38,12 +40,8 @@ const swaggerDefinition = {
           },
         },
         responses: {
-          '200': {
-            description: 'Cálculo exitoso',
-          },
-          '400': {
-            description: 'Datos inválidos',
-          },
+          '200': { description: 'Cálculo exitoso' },
+          '400': { description: 'Datos inválidos' },
         },
       },
     },
@@ -62,12 +60,8 @@ const swaggerDefinition = {
           },
         },
         responses: {
-          '200': {
-            description: 'Cálculo exitoso',
-          },
-          '400': {
-            description: 'Datos inválidos',
-          },
+          '200': { description: 'Cálculo exitoso' },
+          '400': { description: 'Datos inválidos' },
         },
       },
     },
@@ -86,59 +80,62 @@ const swaggerDefinition = {
           },
         },
         responses: {
+          '200': { description: 'Cálculo exitoso' },
+          '400': { description: 'Datos inválidos' },
+        },
+      },
+    },
+    // --- Ruta del Historial ---
+    '/api/history': {
+      get: {
+        summary: 'Obtiene el historial de todas las operaciones realizadas',
+        tags: ['Historial'],
+        responses: {
           '200': {
-            description: 'Cálculo exitoso',
-          },
-          '400': {
-            description: 'Datos inválidos',
+            description: 'Un arreglo con todas las operaciones guardadas.',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      figure: { type: 'string', example: 'rectángulo' },
+                      calculation: { type: 'string', example: 'área' },
+                      parameters: { type: 'object' },
+                      timestamp: { type: 'string', format: 'date-time' },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
     },
   },
-  // Definición de los esquemas de datos reutilizables.
   components: {
     schemas: {
       RectangleInput: {
         type: 'object',
         properties: {
-          base: {
-            type: 'number',
-            description: 'La base del rectángulo.',
-            example: 10,
-          },
-          height: {
-            type: 'number',
-            description: 'La altura del rectángulo.',
-            example: 5,
-          },
+          base: { type: 'number', example: 10 },
+          height: { type: 'number', example: 5 },
         },
         required: ['base', 'height'],
       },
       CubeInput: {
         type: 'object',
         properties: {
-          side: {
-            type: 'number',
-            description: 'La longitud de un lado del cubo.',
-            example: 4,
-          },
+          side: { type: 'number', example: 4 },
         },
         required: ['side'],
       },
       CylinderInput: {
         type: 'object',
         properties: {
-          radius: {
-            type: 'number',
-            description: 'El radio de la base del cilindro.',
-            example: 3,
-          },
-          height: {
-            type: 'number',
-            description: 'La altura del cilindro.',
-            example: 10,
-          },
+          radius: { type: 'number', example: 3 },
+          height: { type: 'number', example: 10 },
         },
         required: ['radius', 'height'],
       },

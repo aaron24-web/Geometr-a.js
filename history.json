@@ -1,0 +1,19 @@
+[
+  {
+    "figure": "rectángulo",
+    "calculation": "área",
+    "parameters": {
+      "base": 3,
+      "height": 2
+    },
+    "timestamp": "2025-07-10T13:51:33.832Z"
+  },
+  {
+    "figure": "cubo",
+    "calculation": "volumen",
+    "parameters": {
+      "side": 4
+    },
+    "timestamp": "2025-07-10T13:56:44.821Z"
+  }
+]
